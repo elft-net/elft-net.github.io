@@ -1,0 +1,24 @@
+project:
+  type: website
+  output-dir: "docs"
+
+website:
+  title: "The Devops Society"
+  navbar:
+    left:
+      - text: "Home"
+        file: index.qmd
+      - text: "Journal"
+        file: journal.qmd
+      - text: "CV"
+        file: cv.qmd
+    right:
+      - about.qmd
+      - icon: github
+        href: https://github.com/elft-net
+      - icon: twitter
+        href: https://twitter.com/ethermol
+format:
+  html:
+    theme: sketchy
+    css: styles.css

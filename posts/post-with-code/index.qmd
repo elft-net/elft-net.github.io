@@ -1,0 +1,9 @@
+---
+title: "Post With Code"
+author: "Peter Mostert"
+date: "2024-09-20"
+categories: [code, analysis, r]
+image: "image.jpg"
+---
+
+This is a post with executable code.

@@ -1,0 +1,5 @@
+# About
+
+In an effort to get aquainted with Quarto and its Features this site has been published to Document the journey. This caused the origin of this site and if things go according to plan then the Journal will get decorated with Devops rekated articles.
+
+At some point in time regular life will probably get in the way blocking our endeavours to explore new technologies and workflows. But then, according to Albert, time slows down when moving fast so let's do just that and quickly push things forward.
