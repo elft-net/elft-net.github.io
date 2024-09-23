@@ -1,5 +1,5 @@
 ---
-title: "Thoughts about AI: From Learning Patterns to Hallucinated Outcomes."
+title: "Some Thoughts about AI."
 author: "Peter Mostert"
 date: "2024-09-23"
 image: "ai_thumbnail.jpg"
