@@ -2,6 +2,7 @@
   {
     "listing": "/journal.html",
     "items": [
+      "/posts/ai/ai-intro.html",
       "/posts/post-with-code/index.html",
       "/posts/welcome/index.html"
     ]
