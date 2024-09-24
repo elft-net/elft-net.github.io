@@ -1,0 +1,123 @@
+
+---
+title: "Re-installing Nix on macOS"
+author: "Peter Mostert"
+date: "2024-09-23"
+image: "nix-darwin.png"
+categories: [nix nix-darwin devbox]
+---
+
+Needed to re-install Nix after having deployed an update that didn't work out. Just could not spend the time to figure out why access to the nix deamon was denied in the new version. Re-installing provided me with an opportunity to get my Nix-installation in compliance with the rest of the organization.
+
+My journey started here: https://zero-to-nix.com/concepts/nix-installer.
+The script failed while the /nix file system could not be replaced and there were some users and a group that stood in the way. Got a clean setup by doing:
+
+```bash
+diskutil apfs deleteVolume "Nix Store"
+sudo dscl . -delete /Groups/nixbld
+for i in $(seq 12 32); do sudo dscl . -delete /Users/_nixbld$i; done
+```
+
+After that the installation worked (I had to try twice for some reason).
+
+```bash
+[mos@chap ~/Repo/play/devops-directive-kubernetes-course]$ curl --proto '=https' --tlsv1.2 -sSf -L https://install.determinate.systems/nix | sh -s -- install
+info: downloading installer (https://install.determinate.systems/nix/tag/v0.26.2/nix-installer-x86_64-darwin)
+ INFO nix-installer v0.26.2
+`nix-installer` needs to run as `root`, attempting to escalate now via `sudo`...
+Password:
+ INFO nix-installer v0.26.2
+Nix install plan (v0.26.2)
+Planner: macos (with default settings)
+
+Planned actions:
+* Create an encrypted APFS volume `Nix Store` for Nix on `disk1` and add it to `/etc/fstab` mounting on `/nix`
+* Extract the bundled Nix (originally from /nix/store/zw0glikil8ncwb6r7bgdrilk50cval8i-nix-binary-tarball-2.24.7/nix-2.24.7-x86_64-darwin.tar.xz)
+* Create a directory tree in `/nix`
+* Move the downloaded Nix into `/nix`
+* Create build users (UID 351-382) and group (GID 350)
+* Configure Time Machine exclusions
+* Setup the default Nix profile
+* Place the Nix configuration in `/etc/nix/nix.conf`
+* Configure the shell profiles
+* Configuring zsh to support using Nix in non-interactive shells
+* Create a `launchctl` plist to put Nix into your PATH
+* Configure upstream Nix daemon service
+* Remove directory `/nix/temp-install-dir`
+
+
+Proceed? ([Y]es/[n]o/[e]xplain): Y
+ INFO Step: Create an encrypted APFS volume `Nix Store` for Nix on `disk1` and add it to `/etc/fstab` mounting on `/nix`
+ INFO Step: Provision Nix
+ INFO Step: Create build users (UID 351-382) and group (GID 350)
+ INFO Step: Configure Time Machine exclusions
+ INFO Step: Configure Nix
+ INFO Step: Configuring zsh to support using Nix in non-interactive shells
+ INFO Step: Create a `launchctl` plist to put Nix into your PATH
+ INFO Step: Configure upstream Nix daemon service
+ INFO Step: Remove directory `/nix/temp-install-dir`
+Nix was installed successfully!
+To get started using Nix, open a new shell or run `. /nix/var/nix/profiles/default/etc/profile.d/nix-daemon.sh`
+
+[mos@chap ~/Repo/play/devops-directive-kubernetes-course]$
+```
+
+**nix-installer-x86_64-darwin**
+
+```bash
+[mos@chap ~/.config]$ mkdir -p ~/.config/nix-darwin                                             (:|✔)  4:00PM
+[mos@chap ~/.config]$ cd nix-darwin/                                                            (:|✔)  4:01PM
+[mos@chap ~/.config/nix-darwin]$ nix flake init -t nix-darwin                                   (:|✔)  4:01PM
+wrote: /Users/mos/.config/nix-darwin/flake.nix
+[mos@chap ~/.config/nix-darwin]$ sed -i '' "s/simple/$(scutil --get LocalHostName)/" flake.nix  (:|✔)  4:02PM
+[mos@chap ~/.config/nix-darwin]$ nix run nix-darwin -- switch --flake ~/.config/nix-darwin#chap
+```
+
+**moving forward**
+
+nix-darwin and nix can be setup to control a ton of settings. For now thing like home-manager (controling user specific configuration settings) and brew repositories (enabling to install the brew applications not available in the nix-store) were not merged into the config just to not get overwhealmed.
+
+However `devbox` now runs upon the nix installation described above. DevBox is a tool that can configures your shell on a project bases. If the project directory contains a devbox.json file then devbox handles this in a flake like approach. `devbox shell` installs the packages mentioned in devbox.json into your current shell. This is my main use-case atm.
+
+**sample devbox.json**
+```json
+{
+  "$schema": "https://raw.githubusercontent.com/jetify-com/devbox/0.10.7/.schema/devbox.schema.json",
+  "packages": [
+    "civo@latest",
+    "envsubst@latest",
+    "gh@latest",
+    "go@latest",
+    "go-task@latest",
+    "path:gcloud#google-cloud-sdk",
+    "gum@latest",
+    "jq@latest",
+    "k9s@latest",
+    "kind@latest",
+    "kluctl@latest",
+    "ko@latest",
+    "kubectl@latest",
+    "kubectx@latest",
+    "kubernetes-helm@latest",
+    "kustomize@latest",
+    "oras@latest",
+    "nodejs_20@latest",
+    "poetry@latest",
+    "python312@latest",
+    "tilt@latest",
+    "yq-go@latest",
+    "act@latest",
+    "kubent@latest"
+  ],
+  "shell": {
+    "init_hook": [
+      "export GOBIN=$(git rev-parse --show-toplevel)/bin",
+      "export PATH=$GOBIN:$PATH",
+      "go install sigs.k8s.io/cloud-provider-kind@v0.2.0"
+    ],
+    "scripts": {
+      "test": ["echo \"Error: no test specified\" && exit 1"]
+    }
+  }
+}
+```
