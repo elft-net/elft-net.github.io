@@ -17,7 +17,7 @@ Don't let the quantity of this post scare you away. Most of the content got gene
 
 The Amazon docs portal provides a [document](https://docs.aws.amazon.com/amazonq/latest/qdeveloper-ug/command-line-getting-started-installing.html) describing how to get things going if using macOS. 
 
-Besides a mac this requires a subscription for Builder ID which seems to be free. After install a `q` command is added to the command pallet. At first sightthe most appealing options are the CLI-completions and the CLI-chatbot. Lets play a bit with the latter.
+Besides a mac this requires a subscription for Builder ID which seems to be free. After install a `q` command is added to the command pallet. At first sight the most appealing options are the CLI-completions and the CLI-chatbot. Lets play a bit with the latter.
 
 **The Q-bot**
 
