@@ -2,7 +2,7 @@
 ---
 title: "The Q-Factor"
 author: "Peter Mostert"
-date: "2024-09-23"
+date: "2024-09-25"
 image: "ai-amazon-q.jpg"
 categories: [amazon, aws, ai]
 ---
@@ -387,10 +387,10 @@ installation steps and how to interact with your new cluster.
 
 **Good Practices**
 
-Non of the generic good practices of the generic example got implemented in the specific code. Moreover port 22 is opened for the public while Talos does not use it.
+None of the good practices of the generic example got implemented in the specific code. Moreover port 22 is opened for the public while Talos does not require this afaik.
 
 
-Had to do some fiddling for to get the correct ami selected and removed a self reference to the end-point but then the plan came together.
+Had to do some fiddling for to get the correct ami selected and removed a self reference to the end-point but then the plan seemd to come together.
 
 ```
 Do you want to perform these actions?
@@ -435,7 +435,7 @@ An error occurred during a connection to ec2-3-69-46-111.eu-central-1.compute.am
     If you are unable to load any pages, check your computer’s network connection.
     If your computer or network is protected by a firewall or proxy, make sure that Firefox is permitted to access the web.
 ```
-Not a good sign . . . but let's try to bootstrap the Talos node anyway.
+Not a good sign . . . trying to bootstrap the Talos node anyway caused some further havoc:
 ```bash
 [mos@chap ~/…/play/devops-directive-terraform-course/10-aws-talos]$ talosctl gen config talos-cluster https://3.69.46.111:6443
 generating PKI and tokens
@@ -450,9 +450,10 @@ error applying new configuration: rpc error: code = Unavailable desc = connectio
 
 Referring to the [Talos Documentation](https://www.talos.dev/v1.8/talos-guides/install/cloud-platforms/aws/) for how this should be done properly.
 
-Bluntly following Q got something running up in the AWS Clouds. While the instance seemed to be properly running the talosctl service could not connect to it for some reason. This project was started at a pinch, not prepared for whatsoever so I might have picked an outdated image or try to use a workflow that is not applicable for this AMI . . . .
+Bluntly following Q got something running up in the AWS Clouds. While the instance seemed to be properly running the talosctl service could not connect for some reason. This project was started at a pinch, not prepared for whatsoever so I might have picked an outdated image or try to use a workflow that is not applicable for this AMI . . . .
 
-The Q- gemerated Terraform template is still a far stretch from what is described in the Talos docs. On the other hand that's what I asked for, a developer instance running Talos so that's what I got. 
+The Q-generated Terraform template is still a far stretch from what is described in the Talos docs. On the other hand that's what I asked for, a developer instance running Talos so that's what I got. 
 
-It would have been nice if it worked though. Might save that for another rainy Wednesday. 
-So what is left for now is `tf destroy` to get things back down again.
+It would have been nice if it would have worked though. Might just save that for another rainy day.
+
+What is left for now is `tf destroy` to take things back down again.
