@@ -3,6 +3,7 @@
     "listing": "/journal.html",
     "items": [
       "/posts/nix/nix-reinstall.html",
+      "/posts/ai/amazon-q.html",
       "/posts/ai/ai-intro.html",
       "/posts/post-with-code/index.html",
       "/posts/welcome/index.html"

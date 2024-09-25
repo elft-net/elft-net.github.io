@@ -4,7 +4,7 @@ title: "Re-installing Nix on macOS"
 author: "Peter Mostert"
 date: "2024-09-23"
 image: "nix-darwin.png"
-categories: [nix nix-darwin devbox]
+categories: [nix, nix-darwin, devbox]
 ---
 
 Needed to re-install Nix after having deployed an update that didn't work out. Just could not spend the time to figure out why access to the nix deamon was denied in the new version. Re-installing provided me with an opportunity to get my Nix-installation in compliance with the rest of the organization.

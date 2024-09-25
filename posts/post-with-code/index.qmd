@@ -7,3 +7,9 @@ image: "Rlogo.svg"
 ---
 
 This is a post with executable code.
+
+```R
+x <- 1
+y <- 2
+x + y
+```
